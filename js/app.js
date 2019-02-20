@@ -24,6 +24,7 @@ Item.prototype.render_as_image = function(target_img){
   target_img.src = this.url;
 };
 
+//Init Area: put three items on page, listen for clicks, create all items.
 new Item('Bag', './img/bag.jpg');
 new Item('Banana', './img/banana.jpg');
 new Item('Bathroom', './img/bathroom.jpg');
@@ -89,6 +90,55 @@ function handle_item_click (event) {
 
 item_container.addEventListener('click', handle_item_click);
 
-//Init Area: put three items on page, listen for clicks, create all items.
+
+//=======Chart.js=======
+
+var canvas_el = document.getElementById('voteResults');
+var ctx = canvas_el.getContext('2d');
+
+var vote_data = [];
+for(var i = 0; i <the_catalog.length; i++){
+  vote_data.push(the_catalog[i].clicks)
+}
+
+var myChart = new myChart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['R2D2 Bag', 'Banana Slicer', 'Bathroom Stand', 'Boots', 'Breakfast Station', 'Meatball Bubblegum', 'Chair', 'Cthulhu', 'Dog Duck Bill', 'Dragon Meat', 'Pen Cutlery', 'Pet Sweeper', 'Pizza Scissors', 'Shark Sleeping Bag', 'Baby Sweeper', 'Tauntaun Sleeping Bag', 'Unicorn Meat', 'USB Tentacle', 'Watering Can', 'Wine Glass'],
+    datasets: [{
+      label: 'Focus Group Votes',
+      data: vote_data,
+      backgroundColor: [
+        'grey',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: ['rgba(255,99,132,1)',
+      'rgba(54, 162, 235, 1)',
+      'rgba(255, 206, 86, 1)',
+      'rgba(75, 192, 192, 1)',
+      'rgba(153, 102, 255, 1)',
+      'rgba(255, 159, 64, 1)'
+    ],
+    borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    },
+    animation: {
+      easing: 'easeInCirc',
+      duration: 1000
+    }
+  }
+});
 
 
