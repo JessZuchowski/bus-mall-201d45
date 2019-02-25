@@ -2,11 +2,13 @@
 
 //Global variables
 //var NUMBER_OF_CLICKS is static, the_catalog will be an array. Creating an item_container for the main body of the page. Created items at three positions by item Id. Declares vars for displayed_items.
-var NUMBER_OF_CLICKS = 5;
+var NUMBER_OF_CLICKS = 25;
 var the_catalog = [];
 
 var item_container = document.getElementById('all_items');
+var vote_container = document.getElementById('vote_results');
 
+//Creates elements for each displayed item (item image and h2).
 var displayed_item_left;
 var left_img = document.getElementById('item_left_img');
 var left_h2 = document.getElementById('item_left_h2');
@@ -19,27 +21,57 @@ var displayed_item_right;
 var right_img = document.getElementById('item_right_img');
 var right_h2 = document.getElementById('item_right_h2');
 
+
 //Item Constructor: includes item name, url, click count, and appeared. Pushes to the_catalog.
 var Item = function(name, url){
   this.name = name;
   this.url = url;
   this.clicked_on_count = 0;
   this.appeared = 0;
-
+//Pushes into global array.
   the_catalog.push(this); 
 };
 
+//Renders items to page.
 var render_item = function(item, target_img, target_h2){
   target_img.src = item.url;
   target_h2.textContent = item.name;
 };
 
+//Creates an event that handles clicks on images.
+var handle_item_click = function(event){
+  if(event.target.tagName === 'IMG'){
+    increase_item_clicks(event.target.id);
+
+    //When clicks run out, removes event listener and renders chart.  
+    if (NUMBER_OF_CLICKS <= 0) {
+      item_container.removeEventListener('click', handle_item_click);
+      render_item_chart();
+
+      //Stringifies the catalog and saves in local storage.
+      var string_items = JSON.stringify(the_catalog);
+      localStorage.setItem('all_items', string_items);
+      console.log('Vote results saved to local storage.');
+    } else {
+      //Decrements clicks and starts pick new item function.
+      NUMBER_OF_CLICKS--;
+      pick_new_items();
+    }
+  }
+};
+
+var vote_data = [];
+for(var i = 0; i <the_catalog.length; i++){
+  vote_data.push(the_catalog[i].clicks)
+}
+
+var item_click_data = [];
+var item_click_labels = [];
+var clicked_on_count = [];
+
 var render_item_chart = function () {
   var canvas_el = document.getElementById('vote_chart');
   var ctx = canvas_el.getContext('2d');
-
-  var item_click_data = [];
-  var item_click_labels = [];
 
   for (var i = 0; i < the_catalog.length; i++) {
     item_click_data.push(the_catalog[i].clicked_on_count);
@@ -50,12 +82,12 @@ var render_item_chart = function () {
 
 var render_vote_chart = function(data, labels, title, ctx){
   new Chart(ctx, {
-    type: 'bar',
+    type: 'horizontalBar',
     data: {
-      labels: ['item_click_labels'],
+      labels: item_click_labels,
       datasets: [{
         label: 'Focus Group Vote Results',
-        data: ['item_click_data'],
+        data: item_click_data,
         backgroundColor: [
           'grey',
           'rgba(54, 162, 235, 0.2)',
@@ -115,23 +147,7 @@ var increase_item_clicks = function(item_image_id){
   }
 };
 
-var handle_item_click = function(event){
-  if(event.target.tagName === 'IMG'){
-    increase_item_clicks(event.target.id);
 
-    if (NUMBER_OF_CLICKS <= 0) {
-      item_container.removeEventListener('click', handle_item_click);
-      render_item_chart();
-
-      var string_items = JSON.stringify(the_catalog);
-      localStorage.setItem('all_items', string_items);
-      console.log('Vote results saved to local storage.');
-    } else {
-      NUMBER_OF_CLICKS--;
-      pick_new_items();
-    }
-  }
-};
 
 //Init Area: put three items on page, listen for clicks, create all items.
 if(localStorage.getItem('all_items')){
@@ -168,41 +184,5 @@ displayed_item_right = the_catalog[2];
 
 item_container.addEventListener('click', handle_item_click);
 
-/*
-//Event Handler: tallies votes and total clicks.
 
-
-
-
-  if (NUMBER_OF_CLICKS <= 0) {
-    item_container.removeEventListener('click', handle_item_click);
-  }
-  
-
-
-//Update currently displayed items. Tied to the_catalog array, not images. 
-  the_catalog[random_left].render_as_image(item_left);
-  the_catalog[random_center].render_as_image(item_center);
-  the_catalog[random_right].render_as_image(item_right);
-
-//Call render function for 3 new items using catalog index and ids. 
-  displayed_item_left = the_catalog[random_left];
-  displayed_item_center = the_catalog[random_center];
-  displayed_item_right = the_catalog[random_right];
-}
-
-
-
-
-//=======Chart.js=======
-
-var canvas_el = document.getElementById('voteResults');
-var ctx = canvas_el.getContext('2d');
-
-var vote_data = [];
-for(var i = 0; i <the_catalog.length; i++){
-  vote_data.push(the_catalog[i].clicks)
-}
-
-*/
 
