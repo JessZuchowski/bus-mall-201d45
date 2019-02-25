@@ -5,27 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bus Mall</title>
-    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
     <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Bus Mall Product Voting</h1>
+    <h1>Bus Mall Focus Group Voting</h1>
 
-    <div id="left_item">
-        <img id="left_item_img">
-        <h2t id="left_item_h2"></h2>
+<section id="all_items">
+    <div>
+    <img id="item_left_img" src="img/unicorn.jpg">
+    <h2 id="item_left_h2">Unicorn Meat</h2>
     </div>
-
-    <div id="center_item">
-        <img id="center_item_img">
-        <h2t id="center_item_h2"></h2>
+   
+    <div>
+    <img id="item_center_img" src="img/bubblegum.jpg">
+    <h2 id="item_center_h2">Meatball Bubblegum</h2>
     </div>
-
-    <div id="right_item">
-        <img id="right_item_img">
-        <h2t id="right_item_h2"></h2>
+    
+    <div>
+    <img id="item_right_img" src="img/dragon.jpg"> 
+    <h2 id="item_right_h2">Dragon Meat</h2> 
     </div>
-
+    
+</section>
+    <div>
+        <canvas id="vote_chart" width="700" height="700"></canvas>
+    </div>
     <script src="js/app.js"></script>
 </body>
 </html>

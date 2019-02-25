@@ -1,0 +1,21 @@
+body {
+    background-color: grey;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+h1 {
+    font-size: 50px;
+    margin: auto;
+}
+section > div {
+    display: inline-block;
+    margin: auto;
+}
+img {
+    width: 300px;
+}
+canvas {
+    width: 700px;
+    height: 700px;
+}
